@@ -1,7 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function AddProduct() {
+  const navigate = useNavigate();
+  const [product, setProduct] = useState({
+    name: "",
+    price: null,
+    rating: "",
+    category: "",
+  });
+  const onValueChanged = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setProduct({ ...product, [name]: value });
+  };
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    alert(
+      `${product.name},${product.price},${product.rating},${product.category}`
+    );
+    navigate("/");
+  };
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>
       <Link
@@ -12,50 +31,68 @@ function AddProduct() {
       >
         Back to Main
       </Link>
-      <form style={{ width: "50%", margin: "auto", marginTop: "30px" }}>
+      <form
+        style={{ width: "50%", margin: "auto", marginTop: "30px" }}
+        onSubmit={onFormSubmit}
+      >
         <h3>Add New Product</h3>
-        <div class="form-group">
-          <label for="name">Name</label>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="name"
+            name="name"
+            value={product.name}
+            onChange={onValueChanged}
             placeholder="Enter product name"
             required
           />
         </div>
-        <div class="form-group">
-          <label for="price">Price</label>
+        <div className="form-group">
+          <label htmlFor="price">Price</label>
           <input
             type="number"
-            class="form-control"
+            className="form-control"
             id="price"
+            name="price"
+            value={product.price}
+            onChange={onValueChanged}
             placeholder="Enter price"
             required
           />
         </div>
-        <div class="form-group">
-          <label for="rating">Rating</label>
+        <div className="form-group">
+          <label htmlFor="rating">Rating</label>
           <input
             type="number"
-            class="form-control"
+            className="form-control"
             id="rating"
+            name="rating"
+            value={product.rating}
+            onChange={onValueChanged}
             placeholder="Enter rating"
             required
           />
         </div>
-        <div class="form-group">
-          <label for="text">Category</label>
-          <select class="form-control" id="category">
-            <option selected disabled>
-              Open this select menu
+        <div className="form-group">
+          <label htmlFor="text">Category</label>
+          <select
+            className="form-control"
+            id="category"
+            name="category"
+            value={product.category}
+            onChange={onValueChanged}
+          >
+            <option selected value="none">
+              ---------------------
             </option>
-            <option value="1">Phone</option>
-            <option value="2">Watch</option>
-            <option value="3">Laptop</option>
+            <option value="Phone">Phone</option>
+            <option value="Watch">Watch</option>
+            <option value="Laptop">Laptop</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Add
         </button>
       </form>
