@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Data from "../../data/data";
 
 function CategoryList() {
+  const initalState = Data.categoryList;
+  const [categoryList, setCategoryList] = useState(initalState);
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>
       <Link
@@ -12,34 +15,32 @@ function CategoryList() {
       >
         Add New Category
       </Link>
-      <table class="table table-bordered">
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Category Type</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          {categoryList.map((item) => {
+            return (
+              <tr key={item.id}>
+                <th scope="row">{item.id}</th>
+                <td>{item.name}</td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    style={{ marginRight: "20px" }}
+                  >
+                    Update
+                  </button>
+                  <button className="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
