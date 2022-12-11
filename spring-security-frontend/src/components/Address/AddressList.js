@@ -1,10 +1,40 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, redirect } from "react-router-dom";
 import Data from "../../data/data";
 
 function AddressList() {
   let initalState = Data.addressList;
   const [addressList, setAddressList] = useState(initalState);
+  // const accessToken = localStorage.getItem("accessToken");
+  // if (!accessToken) {
+  //   return redirect("/login");
+  // }
+  async function fetchAddresses() {
+    const response = await axios.get("http://localhost:8080/addresses", {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    setAddressList(response.data);
+  }
+  const handleAddressDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/addresses/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>
       <Link
@@ -40,7 +70,12 @@ function AddressList() {
                   >
                     Update
                   </button>
-                  <button className="btn btn-danger">Delete</button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleAddressDelete(item.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             );

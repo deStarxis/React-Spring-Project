@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -5,7 +6,7 @@ function AddAddress() {
   const navigate = useNavigate();
   const [address, setAddress] = useState({
     street: "",
-    zip: "",
+    zip: null,
     city: "",
   });
   const onValueChanged = (event) => {
@@ -13,10 +14,22 @@ function AddAddress() {
     const value = event.target.value;
     setAddress({ ...address, [name]: value });
   };
-  const onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
-    alert(`${address.street},${address.city},${address.zip}`);
-    navigate("/addresses");
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/addresses",
+        address,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      navigate("/addresses");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>
@@ -49,7 +62,7 @@ function AddAddress() {
         <div className="form-group">
           <label htmlFor="zip">Zip Code</label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             id="zip"
             name="zip"
