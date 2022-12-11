@@ -64,12 +64,13 @@ function AddressList() {
                 <td>{item.zip}</td>
                 <td>{item.city}</td>
                 <td>
-                  <button
+                  <Link
                     className="btn btn-primary"
                     style={{ marginRight: "20px" }}
+                    to={`/addresses/${item.id}`}
                   >
                     Update
-                  </button>
+                  </Link>
                   <button
                     className="btn btn-danger"
                     onClick={() => handleAddressDelete(item.id)}

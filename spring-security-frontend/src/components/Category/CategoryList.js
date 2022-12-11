@@ -56,12 +56,13 @@ function CategoryList() {
                 <th scope="row">{item.id}</th>
                 <td>{item.name}</td>
                 <td>
-                  <button
+                  <Link
                     className="btn btn-primary"
                     style={{ marginRight: "20px" }}
+                    to={`/categories/${item.id}`}
                   >
                     Update
-                  </button>
+                  </Link>
                   <button
                     className="btn btn-danger"
                     onClick={() => handleCategoryDelete(item.id)}
