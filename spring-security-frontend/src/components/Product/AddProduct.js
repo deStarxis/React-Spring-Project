@@ -1,25 +1,52 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Data from "../../data/data";
 
 function AddProduct() {
   const navigate = useNavigate();
+  const [categoryList, setCategoryList] = useState(Data.categoryList);
   const [product, setProduct] = useState({
     name: "",
     price: null,
     rating: "",
-    category: "",
+    category: Object,
   });
+  async function fetchCategories() {
+    const response = await axios.get("http://localhost:8080/categories", {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    setCategoryList(response.data);
+  }
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   const onValueChanged = (event) => {
     const name = event.target.name;
     const value = event.target.value;
+    console.log(value);
+    console.log(name);
     setProduct({ ...product, [name]: value });
   };
-  const onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
-    alert(
-      `${product.name},${product.price},${product.rating},${product.category}`
-    );
-    navigate("/");
+    product.category = JSON.parse(product.category);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/products",
+        product,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>
@@ -87,9 +114,13 @@ function AddProduct() {
             <option selected value="none">
               ---------------------
             </option>
-            <option value="Phone">Phone</option>
-            <option value="Watch">Watch</option>
-            <option value="Laptop">Laptop</option>
+            {categoryList.map((item) => {
+              return (
+                <option key={item.id} value={JSON.stringify(item)}>
+                  {item.name}
+                </option>
+              );
+            })}
           </select>
         </div>
         <button type="submit" className="btn btn-primary">
