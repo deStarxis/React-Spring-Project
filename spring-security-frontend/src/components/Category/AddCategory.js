@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,10 +12,22 @@ function AddCategory() {
     const value = event.target.value;
     setCategory({ ...category, [name]: value });
   };
-  const onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
-    alert(`${category.name}`);
-    navigate("/categories");
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/categories",
+        category,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      navigate("/categories");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>

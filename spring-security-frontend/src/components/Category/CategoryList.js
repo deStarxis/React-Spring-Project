@@ -1,10 +1,36 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Data from "../../data/data";
 
 function CategoryList() {
   const initalState = Data.categoryList;
   const [categoryList, setCategoryList] = useState(initalState);
+  async function fetchCategories() {
+    const response = await axios.get("http://localhost:8080/categories", {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    setCategoryList(response.data);
+  }
+  const handleCategoryDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/categories/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   return (
     <div style={{ width: "80%", margin: "auto", marginTop: "30px" }}>
       <Link
@@ -36,7 +62,12 @@ function CategoryList() {
                   >
                     Update
                   </button>
-                  <button className="btn btn-danger">Delete</button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleCategoryDelete(item.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             );
