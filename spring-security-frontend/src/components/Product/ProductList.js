@@ -1,14 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ReviewModal from "../Common/ReviewModal";
 
 function ProductList() {
-  const [showModal, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const initalState = [];
   const [productList, setProductList] = useState(initalState);
   async function fetchProducts() {
@@ -67,37 +61,26 @@ function ProductList() {
                 <td>{data.rating}</td>
                 <td>{data.category.name}</td>
                 <td>
-                  <button
+                  <Link
                     className="btn btn-primary"
                     style={{ marginRight: "20px" }}
+                    to={`/products/${data.id}`}
                   >
                     Update
-                  </button>
-                  <button
+                  </Link>
+                  <Link
                     className="btn btn-success"
                     style={{ marginRight: "20px" }}
-                    onClick={handleShow}
+                    to={`/products/${data.id}/reviews`}
                   >
                     View Reviews
-                  </button>
-                  {/* 11111 */}
-                  {/* {data.reviewList.map((val) => {
-                    console.log(val);
-                    return ( */}
-                  <ReviewModal
-                    showModal={showModal}
-                    handleClose={handleClose}
-                    productId={data.id}
-                  />
-                  {/* );
-                  })} */}
-                  {/* 11 */}
+                  </Link>
                   <button
                     className="btn btn-danger"
                     onClick={() => handleProductDelete(data.id)}
                   >
                     Delete
-                  </button>{" "}
+                  </button>
                 </td>
               </tr>
             );

@@ -53,7 +53,6 @@ function ReviewList() {
         </Link>
 
         <Button
-          // to={`/products/${id}/reviews`}
           className="btn btn-success"
           id="AddNewReview"
           style={{ marginBottom: "20px", float: "right" }}

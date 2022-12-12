@@ -26,8 +26,6 @@ function AddProduct() {
   const onValueChanged = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    console.log(value);
-    console.log(name);
     setProduct({ ...product, [name]: value });
   };
   const onFormSubmit = async (event) => {

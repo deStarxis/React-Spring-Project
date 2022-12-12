@@ -6,10 +6,6 @@ import Data from "../../data/data";
 function AddressList() {
   let initalState = Data.addressList;
   const [addressList, setAddressList] = useState(initalState);
-  // const accessToken = localStorage.getItem("accessToken");
-  // if (!accessToken) {
-  //   return redirect("/login");
-  // }
   async function fetchAddresses() {
     const response = await axios.get("http://localhost:8080/addresses", {
       headers: {

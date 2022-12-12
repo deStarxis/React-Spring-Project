@@ -28,8 +28,6 @@ function ReviewModal(props) {
   const onFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      // product.category = JSON.parse(product.category);
-      var val = JSON.stringify(product);
       const payload = {
         comment: review.comment,
         product: product,

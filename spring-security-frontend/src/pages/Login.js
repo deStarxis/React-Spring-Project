@@ -26,10 +26,6 @@ function Login() {
       console.log(error);
     }
   };
-  // const accessToken = localStorage.getItem("accessToken");
-  // if (accessToken) {
-  //   return redirect("/");
-  // }
   return (
     <form
       method="POST"
