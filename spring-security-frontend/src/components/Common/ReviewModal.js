@@ -3,24 +3,51 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 function ReviewModal(props) {
-  const id = props.productId;
-  const initalState = [];
-  const [reviewList, setReviewList] = useState(initalState);
-  async function fetchReviews() {
+  const initalState = {};
+  const [review, setReview] = useState(initalState);
+  const [product, setProduct] = useState(initalState);
+  const onValueChanged = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setReview({ ...review, [name]: value });
+  };
+  async function fetchProduct() {
     const response = await axios.get(
-      `http://localhost:8080/products/${id}/reviews`,
+      `http://localhost:8080/products/${props.productId}`,
       {
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }
     );
-    setReviewList(response.data);
-    console.log(reviewList);
+    setProduct(response.data);
   }
   useEffect(() => {
-    fetchReviews();
-  }, []);
+    fetchProduct();
+  }, [props.productId]);
+  const onFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      // product.category = JSON.parse(product.category);
+      var val = JSON.stringify(product);
+      const payload = {
+        comment: review.comment,
+        product: product,
+      };
+      const response = await axios.post(
+        "http://localhost:8080/reviews",
+        payload,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      props.handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Modal
@@ -30,10 +57,29 @@ function ReviewModal(props) {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Reviews</Modal.Title>
+          <Modal.Title>Add Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h1>These are reviews</h1>
+          <div className="form-group">
+            <label htmlFor="comment">Comment</label>
+            <input
+              type="text"
+              className="form-control"
+              id="comment"
+              name="comment"
+              value={review.comment}
+              onChange={onValueChanged}
+              placeholder="Enter comment"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-danger"
+            onClick={onFormSubmit}
+          >
+            Add
+          </button>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={props.handleClose}>
