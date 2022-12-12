@@ -36,6 +36,7 @@ function ReviewList() {
           },
         }
       );
+      setReviewList(reviewList.filter((review) => review.id !== id));
     } catch (error) {
       console.log(error);
     }

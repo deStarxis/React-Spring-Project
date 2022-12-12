@@ -24,6 +24,7 @@ function CategoryList() {
           },
         }
       );
+      setCategoryList(categoryList.filter((category) => category.id !== id));
     } catch (error) {
       console.log(error);
     }

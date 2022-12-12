@@ -24,6 +24,7 @@ function AddressList() {
           },
         }
       );
+      setAddressList(addressList.filter((address) => address.id !== id));
     } catch (error) {
       console.log(error);
     }

@@ -16,26 +16,34 @@ import Login from "./Login";
 import Signup from "./Signup";
 
 function Dashboard() {
+  const accessToken = localStorage.getItem("accessToken");
   return (
     <>
       <Header />
       <Routes>
-        <Route path={"/"} element={<ProductList />} />
-        <Route path={"/login"} element={<Login />} />
-        <Route path={"/signup"} element={<Signup />} />
-        <Route path={"/add"} element={<AddProduct />} />
-        <Route path={"/products/:id"} element={<UpdateProduct />} />
-        <Route path={"/categories/:id"} element={<UpdateCategory />} />
-        <Route path={"/addresses/:id"} element={<UpdateAddress />} />
-        <Route path={"/categories"} element={<CategoryList />} />
-        <Route path={"/categories/add"} element={<AddCategory />} />
-        <Route path={"/addresses"} element={<AddressList />} />
-        <Route path={"/addresses/add"} element={<AddAddress />} />
-        <Route path={"products/:id/reviews"} element={<ReviewList />} />
-        <Route
-          path={"products/:id/reviews/:reviewId"}
-          element={<UpdateReview />}
-        />
+        {accessToken ? (
+          <>
+            <Route path={"/"} element={<ProductList />} />
+            <Route path={"/add"} element={<AddProduct />} />
+            <Route path={"/products/:id"} element={<UpdateProduct />} />
+            <Route path={"/categories/:id"} element={<UpdateCategory />} />
+            <Route path={"/addresses/:id"} element={<UpdateAddress />} />
+            <Route path={"/categories"} element={<CategoryList />} />
+            <Route path={"/categories/add"} element={<AddCategory />} />
+            <Route path={"/addresses"} element={<AddressList />} />
+            <Route path={"/addresses/add"} element={<AddAddress />} />
+            <Route path={"products/:id/reviews"} element={<ReviewList />} />
+            <Route
+              path={"products/:id/reviews/:reviewId"}
+              element={<UpdateReview />}
+            />
+          </>
+        ) : (
+          <>
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/signup"} element={<Signup />} />
+          </>
+        )}
       </Routes>
     </>
   );

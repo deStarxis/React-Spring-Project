@@ -23,6 +23,7 @@ function ProductList() {
           },
         }
       );
+      setProductList(productList.filter((product) => product.id !== id));
     } catch (error) {
       console.log(error);
     }
